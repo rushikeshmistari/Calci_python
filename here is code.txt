@@ -1,48 +1,153 @@
-#My CALCULATOR:-
-#PLEASE USE PYTHON COMPILER
-def sum(a,b):
-    print("summation of",a,"and",b,"is",a+b)
-def sub(a,b):
-    print("subtraction of",a,"and",b,"is",a-b)
-def mul(a,b):
-    print("multiplication of",a,"and",b,"is",a*b)
-def div(a,b):
-    print("division of",a,"and",b,"is",a/b)
-def mod(a,b):
-    print("modulus of",a,"and",b,"is",a%b)
-    
-print("<----------‐----Simple Calculator---------------->")
-print("Select :-\n1.summation\n2.substraction\n3.multiplication\n4.division\n5.modulus ")
-print("<------------------Now Begin------------------>")
-while (True):
-        x=int(input("enter your choice :-"))
-        if (x==1):
-              z=int(input("enter first value:-"))
-              y=int(input("enter second value:-"))
-              sum(z,y)
-        elif (x==2):
-              z=int(input("enter first value:-"))
-              y=int(input("enter second value:-"))
-              sub(z,y)
-        elif (x==3):
-              z=int(input("enter first value:-"))
-              y=int(input("enter second value:-"))
-              mul(z,y)
-        elif (x==4):
-              z=int(input("enter first value:-"))
-              y=int(input("enter second value:-"))
-              if (y==0):
-                  print("denominator cannot be zero")
-              else:
-                  div(z,y)
-        elif (x==5):
-              z=int(input("enter first value:-"))
-              y=int(input("enter second value:-"))
-              if (y==0):
-                  print("denominator cannot be zero")
-              else:
-                  mod(z,y)
-        else :
-              break
-        print("---------------------------------------------------")
-print("Give Your Feedback")       
+import math
+import os
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def get_number(prompt):
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Invalid input! Please enter a valid number.")
+
+def get_choice(prompt, valid):
+    while True:
+        try:
+            x = int(input(prompt))
+            if x in valid:
+                return x
+            else:
+                print("Invalid choice! Please select from the menu.")
+        except ValueError:
+            print("Invalid input! Please enter a number.")
+
+def format_num(n):
+    return int(n) if n == int(n) else round(n, 6)
+
+def show_history(history):
+    if not history:
+        print("\n  No history yet.\n")
+    else:
+        print("\n---------- Calculation History ----------")
+        for i, h in enumerate(history[-10:], 1):
+            print(f"  {i}. {h}")
+        print("-----------------------------------------\n")
+
+def show_menu():
+    print("=========================================")
+    print("           SIMPLE CALCULATOR             ")
+    print("=========================================")
+    print("  BASIC OPERATIONS")
+    print("   1. Addition")
+    print("   2. Subtraction")
+    print("   3. Multiplication")
+    print("   4. Division")
+    print("   5. Modulus (Remainder)")
+    print("   6. Power / Exponent")
+    print("-----------------------------------------")
+    print("  SCIENTIFIC OPERATIONS")
+    print("   7. Square Root")
+    print("   8. Log base 10")
+    print("   9. Natural Log (ln)")
+    print("  10. Absolute Value")
+    print("-----------------------------------------")
+    print("  11. View History")
+    print("  12. Clear History")
+    print("   0. Exit")
+    print("=========================================")
+
+def main():
+    history = []
+    print("\n  Welcome to the Enhanced Python Calculator!")
+    input("  Press Enter to start...")
+
+    while True:
+        clear()
+        show_menu()
+        x = get_choice("\n  Enter your choice: ", set(range(0, 13)))
+
+        if x == 0:
+            print("\n  Thank you for using the calculator!")
+            print("  Give Your Feedback!\n")
+            break
+
+        elif x == 11:
+            show_history(history)
+            input("  Press Enter to continue...")
+
+        elif x == 12:
+            history.clear()
+            print("\n  History cleared!\n")
+            input("  Press Enter to continue...")
+
+        elif x in [1, 2, 3, 4, 5, 6]:
+            print()
+            a = get_number("  Enter first value  : ")
+            b = get_number("  Enter second value : ")
+
+            if x == 1:
+                result = a + b
+                entry = f"{format_num(a)} + {format_num(b)} = {format_num(result)}"
+            elif x == 2:
+                result = a - b
+                entry = f"{format_num(a)} - {format_num(b)} = {format_num(result)}"
+            elif x == 3:
+                result = a * b
+                entry = f"{format_num(a)} x {format_num(b)} = {format_num(result)}"
+            elif x == 4:
+                if b == 0:
+                    print("\n  Error: Cannot divide by zero!\n")
+                    input("  Press Enter to continue...")
+                    continue
+                result = a / b
+                entry = f"{format_num(a)} / {format_num(b)} = {format_num(result)}"
+            elif x == 5:
+                if b == 0:
+                    print("\n  Error: Cannot mod by zero!\n")
+                    input("  Press Enter to continue...")
+                    continue
+                result = a % b
+                entry = f"{format_num(a)} % {format_num(b)} = {format_num(result)}"
+            elif x == 6:
+                result = a ** b
+                entry = f"{format_num(a)} ^ {format_num(b)} = {format_num(result)}"
+
+            history.append(entry)
+            print(f"\n  Result: {entry}\n")
+            input("  Press Enter to continue...")
+
+        elif x in [7, 8, 9, 10]:
+            print()
+            a = get_number("  Enter value: ")
+
+            if x == 7:
+                if a < 0:
+                    print("\n  Error: Cannot take square root of a negative number!\n")
+                    input("  Press Enter to continue...")
+                    continue
+                result = math.sqrt(a)
+                entry = f"sqrt({format_num(a)}) = {format_num(result)}"
+            elif x == 8:
+                if a <= 0:
+                    print("\n  Error: Log only works for positive numbers!\n")
+                    input("  Press Enter to continue...")
+                    continue
+                result = math.log10(a)
+                entry = f"log({format_num(a)}) = {format_num(result)}"
+            elif x == 9:
+                if a <= 0:
+                    print("\n  Error: ln only works for positive numbers!\n")
+                    input("  Press Enter to continue...")
+                    continue
+                result = math.log(a)
+                entry = f"ln({format_num(a)}) = {format_num(result)}"
+            elif x == 10:
+                result = abs(a)
+                entry = f"abs({format_num(a)}) = {format_num(result)}"
+
+            history.append(entry)
+            print(f"\n  Result: {entry}\n")
+            input("  Press Enter to continue...")
+
+main()
